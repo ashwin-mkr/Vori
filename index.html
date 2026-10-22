@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VorisX – AI Video Editing Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--void:#05030d;--ink:#f4f1ff;--mute:#a79fc7;--cyan:#19d3ff;--violet:#7b3cff;--magenta:#ff3cc8;--amber:#ffb52e;--glass:rgba(14,9,32,.66);--line:rgba(140,110,255,.4);color-scheme:dark;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;background:var(--void);color:var(--ink);font-family:Manrope,"Noto Sans Tamil",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}
+#scroll{height:1100vh}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block}
+h1,h2,h3{font-family:Unbounded,"Noto Sans Tamil","Arial Black",system-ui,sans-serif;font-weight:700;margin:0;line-height:1.1}
+header{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 14px;background:linear-gradient(var(--void),transparent)}
+.logo{font-family:Unbounded,system-ui,sans-serif;font-weight:700;font-size:18px;letter-spacing:.02em}
+.logo b{background:linear-gradient(90deg,var(--magenta),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+nav button{background:none;border:1px solid transparent;color:var(--mute);font:600 13px Manrope,system-ui,sans-serif;padding:6px 12px;border-radius:99px;cursor:pointer}
+nav button:hover{color:var(--ink);border-color:var(--line)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.chap{position:fixed;z-index:4;opacity:0;visibility:hidden;pointer-events:none;transition:visibility 0s}
+#hero{left:5vw;top:50%;transform:translateY(-50%);max-width:min(620px,90vw)}
+#hero h1{font-size:clamp(44px,9vw,104px);letter-spacing:-.02em}
+#hero h1 b{background:linear-gradient(90deg,var(--magenta),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+#hero p{font-size:clamp(18px,2.4vw,26px);margin:14px 0 6px;max-width:28ch}
+#hero small{color:var(--mute);font-size:14px}
+#cap{left:5vw;bottom:calc(env(safe-area-inset-bottom,0px) + 7vh);max-width:min(440px,90vw);background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:18px 20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#cap h2{font-size:clamp(18px,2.2vw,24px)}
+#cap p{margin:8px 0 0;color:var(--mute);font-size:14px}
+#cap .n{font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:6px}
+#tools{right:5vw;top:24vh;max-width:min(380px,90vw);text-align:right}
+#tools h2{font-size:clamp(24px,3.6vw,42px)}
+#tools p{color:var(--mute);margin:10px 0 0}
+.panel{left:50%;top:50%;transform:translate(-50%,-50%);width:min(920px,92vw);max-height:78vh;overflow:auto;background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:clamp(16px,3vw,30px);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.panel h2{font-size:clamp(22px,3.4vw,38px);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,3vw,32px)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:10px}
+.row:last-child{border:0}
+.row span:first-child{font-weight:600}
+.price{font-family:Unbounded,system-ui,sans-serif;font-weight:700;font-size:clamp(17px,2.4vw,24px);padding:2px 12px;border-radius:8px;color:#0a0618}
+.inc{list-style:none;margin:0;padding:0;columns:1;font-size:14px;color:var(--ink)}
+.inc li{padding:5px 0 5px 20px;position:relative}
+.inc li::before{content:"";position:absolute;left:0;top:13px;width:8px;height:8px;border-radius:50%;background:var(--cyan)}
+.panel h3{font-size:15px;margin-bottom:8px;color:var(--mute)}
+#contact{text-align:center}
+#contact h2{font-size:clamp(26px,4.6vw,56px);margin-bottom:12px}
+#contact p{color:var(--mute);margin:0 0 22px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btns a{font:700 15px Manrope,system-ui,sans-serif;color:#0a0618;text-decoration:none;padding:13px 24px;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--violet) 55%,var(--magenta))}
+.btns a:nth-child(2){background:var(--amber)}
+.btns a:nth-child(3){background:var(--ink)}
+#nogl{position:fixed;inset:0;z-index:9;display:grid;place-items:center;text-align:center;padding:24px;background:var(--void)}
+.ta{font-family:"Noto Sans Tamil",Manrope,system-ui,sans-serif;font-weight:600;color:var(--cyan);line-height:1.6}
+.tag{font-family:Unbounded,"Noto Sans Tamil",system-ui,sans-serif;font-weight:700;font-size:clamp(20px,3.6vw,40px);margin:14px 0 8px;background:linear-gradient(90deg,var(--cyan),var(--violet) 50%,var(--magenta));-webkit-background-clip:text;background-clip:text;color:transparent}
+.num{display:block;margin-top:20px;font:700 clamp(20px,3vw,32px) Unbounded,system-ui,sans-serif;color:var(--ink);text-decoration:none}
+.num small{display:block;font:600 13px Manrope,system-ui,sans-serif;color:var(--mute);margin-bottom:4px}
+@media (max-width:700px){.grid{grid-template-columns:1fr}#tools{top:18vh}nav button{padding:6px 8px;font-size:12px}header{padding-left:14px;padding-right:14px}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<header><div class="logo">VORIS<b>X</b></div>
+<nav aria-label="Sections"><button data-go=".1">Home</button><button data-go=".3">Work</button><button data-go=".7">Tools</button><button data-go=".85">Pricing</button><button data-go=".98">Contact</button></nav></header>
+
+<section class="chap" id="hero" data-a="-1" data-b=".07">
+<h1>VORIS<b>X</b></h1>
+<div class="tag">AI-la Try, Video-la Fly!</div>
+<p>Your ideas + AI = stunning videos.</p>
+<p class="ta">உங்கள் ஐடியா + AI = அசத்தும் வீடியோக்கள்.</p>
+<small>Scroll to walk through our edit suite.<br><span class="ta">ஸ்க்ரோல் செய்து எங்கள் எடிட் ஸ்டுடியோவைப் பாருங்கள்.</span></small>
+</section>
+
+<section class="chap" id="cap" data-a=".08" data-b=".63" aria-live="polite">
+<div class="n" id="cn"></div><h2 id="ct"></h2><div class="ta" id="cta"></div><p id="cp"></p>
+</section>
+
+<section class="chap" id="tools" data-a=".65" data-b=".77">
+<h2>Our edit stack</h2>
+<div class="ta">எங்கள் AI கருவிகள்</div>
+<p>Every video is built with a mix of these AI tools, chosen for what each shot needs.</p>
+<p class="ta">ஒவ்வொரு வீடியோவும் இந்த AI கருவிகளின் கலவையில் உருவாகிறது.</p>
+</section>
+
+<section class="chap panel" id="price" data-a=".79" data-b=".92">
+<h2>Price list</h2><div class="ta" style="margin:-8px 0 14px">விலைப்பட்டியல்</div>
+<div class="grid">
+<div>
+<div class="row"><span>22 – 30 sec</span><span class="price" style="background:#b57bff">₹599</span></div>
+<div class="row"><span>30 – 60 sec</span><span class="price" style="background:#4cc9ff">₹999</span></div>
+<div class="row"><span>1 – 2 min</span><span class="price" style="background:#4dffb0">₹1,200</span></div>
+<div class="row"><span>3 – 5 min</span><span class="price" style="background:var(--amber)">₹2,000</span></div>
+<small style="color:var(--mute)">Starting prices. <span class="ta">(ஆரம்ப விலைகள்)</span></small>
+</div>
+<div><h3>Every video includes <span class="ta">· ஒவ்வொரு வீடியோவிலும் அடங்குவது</span></h3>
+<ul class="inc"><li>AI video generation &amp; editing</li><li>Realistic AI visuals</li><li>AI voice-over</li><li>Tamil / English dubbing</li><li>Subtitles &amp; captions</li><li>Background music</li><li>Transitions &amp; effects</li><li>Instagram Reels / YouTube formats</li><li>Basic revisions</li></ul></div>
+</div>
+</section>
+
+<section class="chap panel" id="contact" data-a=".93" data-b="2">
+<div class="tag" style="margin-top:0">AI-la Try, Video-la Fly!</div>
+<h2>Let’s bring your vision to life.</h2>
+<p class="ta">உங்கள் கனவை வீடியோவாக மாற்றுவோம்.</p>
+<p>DM now with your idea and the length you need. We’ll reply with a plan and a price.<br><span class="ta">உங்கள் ஐடியாவையும் வீடியோ நீளத்தையும் DM செய்யுங்கள். திட்டமும் விலையும் சொல்கிறோம்.</span></p>
+<div class="btns"><a data-l="insta" href="#">DM Now</a><a data-l="wa" href="#">WhatsApp</a><a data-l="mail" href="#">Email</a></div>
+<a class="num" id="ph" href="#"><small>Call or WhatsApp · அழைக்க</small><span id="phn">+91 XXXXX XXXXX</span></a>
+</section>
+
+<div id="nogl" hidden><p>This 3D page needs WebGL. Please open it in a recent Chrome, Safari or Edge.</p></div>
+<div id="scroll"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+// ---- EDIT HERE: your contact links ----
+var CFG={insta:"https://instagram.com/",wa:"https://wa.me/",mail:"mailto:hello@example.com",phone:""}; // phone example: "+91 98765 43210"
+// ---- EDIT HERE: your 5 videos. Put a video file path/URL in src to replace the animated placeholder ----
+var VIDEOS=[
+{t:"Western Ghats travel reel",ta:"மேற்குத் தொடர்ச்சி மலை பயண ரீல்",d:"Instagram Reel · 22 sec",tools:"Sora · CapCut · ElevenLabs",v:0,src:""},
+{t:"Product launch short",ta:"புதிய பொருள் அறிமுக ஷார்ட்",d:"YouTube Short · 30 sec",tools:"Gemini · Flow · CapCut",v:1,src:""},
+{t:"City story",ta:"நகரத்தின் கதை",d:"YouTube · 1 min",tools:"AI Studio Flow · Google Vids · ChatGPT",v:0,src:""},
+{t:"Tamil voice-over explainer",ta:"தமிழ் வாய்ஸ்-ஓவர் விளக்க வீடியோ",d:"Reel · 45 sec",tools:"ChatGPT · ElevenLabs · CapCut",v:1,src:""},
+{t:"Tamil ⇄ English dubbing",ta:"தமிழ் ⇄ English டப்பிங்",d:"YouTube · 2 min",tools:"ElevenLabs · Sora · CapCut",v:0,src:""}
+];
+var TOOLS=["Google Gemini","AI Studio Flow","Google Vids","Sora","ChatGPT","ElevenLabs","CapCut"];
+var COL=["#19d3ff","#7b3cff","#ff3cc8","#ffb52e"];
+var $=function(s){return document.querySelector(s)};
+if(CFG.phone){var dg=CFG.phone.replace(/[^\d]/g,"");CFG.wa="https://wa.me/"+dg;$("#phn").textContent=CFG.phone;$("#ph").href="tel:+"+dg}
+document.querySelectorAll("[data-l]").forEach(function(a){a.href=CFG[a.dataset.l]});
+var RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var L=120;
+
+// placeholder "video" painter
+var PAL=[["#1b0b4a","#ff3cc8","#ffb52e"],["#07123a","#19d3ff","#7b3cff"],["#0a0420","#7b3cff","#19d3ff"],["#12062e","#ff3cc8","#7b3cff"],["#06143a","#19d3ff","#ffb52e"]];
+function paint(c,i,t){
+ var g=c.getContext("2d"),w=c.width,h=c.height,p=PAL[i],k,x,y,gr=g.createLinearGradient(0,0,0,h);
+ gr.addColorStop(0,p[0]);gr.addColorStop(1,p[1]);g.fillStyle=gr;g.fillRect(0,0,w,h);g.textAlign="center";
+ if(i==0){g.fillStyle=p[2];g.beginPath();g.arc(w*.5,h*.45+Math.sin(t)*8,h*.13,0,7);g.fill();
+  for(k=0;k<3;k++){g.fillStyle=["#2a0f5e","#1a0a3e","#0b0520"][k];g.beginPath();g.moveTo(0,h);for(x=0;x<=w;x+=8)g.lineTo(x,h*(.64+k*.09)-Math.abs(Math.sin(x*.012*(k+1)+t*.3*(k+1)))*h*.2);g.lineTo(w,h);g.fill()}}
+ else if(i==1){for(k=0;k<6;k++){g.strokeStyle=k%2?p[2]:"#fff";g.globalAlpha=.8-k*.12;g.lineWidth=3;g.beginPath();g.arc(w/2,h*.42,(t*45+k*45)%270+8,0,7);g.stroke()}
+  g.globalAlpha=1;g.fillStyle="#fff";g.font="700 "+w*.17+"px Unbounded,sans-serif";g.fillText("DROP",w/2,h*.45)}
+ else if(i==2){for(k=0;k<14;k++){var bw=w/14,bh=h*(.25+((k*37)%10)/25);g.fillStyle=k%3?"#14082f":"#1d0c44";g.fillRect(k*bw,h-bh,bw-3,bh);g.fillStyle=p[2];for(y=0;y<bh-12;y+=14)if(Math.sin(k*9+y+t*2)>.3)g.fillRect(k*bw+5,h-bh+y+6,bw-13,4)}
+  g.fillStyle="#fff";g.globalAlpha=.5;g.fillRect((t*70)%(w+80)-40,h*.28,80,3);g.globalAlpha=1}
+ else if(i==3){for(x=8;x<w;x+=10){var a=(Math.sin(x*.05+t*5)*.5+.5)*Math.abs(Math.sin(x*.013+t))*h*.3+6;g.fillStyle=x%20?p[2]:"#fff";g.fillRect(x,h*.4-a/2,6,a)}
+  g.fillStyle="#fff";g.font="600 "+w*.07+"px Manrope,'Noto Sans Tamil',sans-serif";g.fillText("நம் கதை இங்கே தொடங்குகிறது",w/2,h*.78)}
+ else{g.fillStyle="rgba(0,0,0,.25)";g.fillRect(w/2,0,w/2,h);g.fillStyle="#fff";g.font="700 "+w*.045+"px Unbounded,sans-serif";g.fillText("தமிழ்",w*.25,h*.2);g.fillText("English",w*.75,h*.2);
+  for(k=0;k<2;k++)for(x=0;x<w/2-30;x+=9){var q=Math.abs(Math.sin(x*.07+t*4+k*2))*h*.28+5;g.fillStyle=p[k?2:1];g.fillRect(k*w/2+15+x,h*.55-q/2,5,q)}}
+ g.fillStyle="rgba(0,0,0,.5)";g.fillRect(0,h-22,w,22);g.fillStyle=p[2];g.fillRect(0,h-22,w*((t%12)/12),22);
+ g.fillStyle="#fff";g.globalAlpha=.9;g.beginPath();g.moveTo(14,12);g.lineTo(14,34);g.lineTo(32,23);g.fill();
+ g.font="600 "+Math.round(w*.03)+"px Manrope,sans-serif";g.textAlign="right";g.fillText("SAMPLE "+(i+1),w-12,28);g.globalAlpha=1}
+
+function start(){
+ var R;try{R=new THREE.WebGLRenderer({canvas:$("#gl"),antialias:true})}catch(e){$("#nogl").hidden=false;return}
+ R.setPixelRatio(Math.min(devicePixelRatio,2));
+ var S=new THREE.Scene();S.background=new THREE.Color(0x05030d);S.fog=new THREE.FogExp2(0x05030d,.024);
+ var cam=new THREE.PerspectiveCamera(65,1,.1,300);cam.position.set(0,3.4,0);
+ function size(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.fov=innerWidth<700?78:65;cam.updateProjectionMatrix()}
+ size();addEventListener("resize",size);
+
+ // ribs, floor grid, neon strips
+ var C0=new THREE.Color("#19d3ff"),C1=new THREE.Color("#ff3cc8"),C2=new THREE.Color("#ffb52e"),z;
+ var rg=new THREE.EdgesGeometry(new THREE.BoxGeometry(12,8,.02));
+ for(z=4;z>-150;z-=6){var f=Math.min(1,Math.max(0,-z/L)),cc=f<.5?C0.clone().lerp(C1,f*2):C1.clone().lerp(C2,(f-.5)*2);
+  var rib=new THREE.LineSegments(rg,new THREE.LineBasicMaterial({color:cc}));rib.position.set(0,4,z);S.add(rib)}
+ var pts=[],x;for(x=-6;x<=6;x+=1.5){pts.push(x,0,6,x,0,-150,x,8,6,x,8,-150)}
+ for(z=6;z>-150;z-=1.5){pts.push(-6,0,z,6,0,z)}
+ var gg=new THREE.BufferGeometry();gg.setAttribute("position",new THREE.Float32BufferAttribute(pts,3));
+ S.add(new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0x2a1a6e,transparent:true,opacity:.55})));
+ [[-5.95,.1,"#19d3ff"],[5.95,.1,"#ff3cc8"],[-5.95,7.9,"#7b3cff"],[5.95,7.9,"#ffb52e"],[-5.95,4,"#7b3cff"],[5.95,4,"#19d3ff"]].forEach(function(s){
+  var m=new THREE.Mesh(new THREE.BoxGeometry(.08,.08,170),new THREE.MeshBasicMaterial({color:s[2]}));m.position.set(s[0],s[1],-65);S.add(m)});
+
+ // glow sprite texture
+ var gc=document.createElement("canvas");gc.width=gc.height=128;var gx=gc.getContext("2d"),rgd=gx.createRadialGradient(64,64,0,64,64,64);
+ rgd.addColorStop(0,"rgba(255,255,255,.9)");rgd.addColorStop(1,"rgba(255,255,255,0)");gx.fillStyle=rgd;gx.fillRect(0,0,128,128);
+ var glowT=new THREE.CanvasTexture(gc);
+
+ // 5 video frames
+ var frames=[];
+ VIDEOS.forEach(function(v,i){
+  var W=v.v?3.5:6.4,H=v.v?6.2:3.6,side=i%2?1:-1,col=COL[i%4],tex,cv=null;
+  if(v.src){var el=document.createElement("video");el.src=v.src;el.muted=el.loop=el.playsInline=true;el.crossOrigin="anonymous";el.play().catch(function(){});tex=new THREE.VideoTexture(el)}
+  else{cv=document.createElement("canvas");cv.width=v.v?360:640;cv.height=v.v?640:360;paint(cv,i,0);tex=new THREE.CanvasTexture(cv)}
+  var g=new THREE.Group(),scr=new THREE.Mesh(new THREE.PlaneGeometry(W,H),new THREE.MeshBasicMaterial({map:tex,fog:false}));
+  var bd=new THREE.Mesh(new THREE.BoxGeometry(W+.25,H+.25,.08),new THREE.MeshBasicMaterial({color:col}));bd.position.z=-.06;
+  var gl=new THREE.Sprite(new THREE.SpriteMaterial({map:glowT,color:col,blending:THREE.AdditiveBlending,transparent:true,opacity:.55,depthWrite:false}));gl.scale.set(W+5,H+5,1);gl.position.z=-.2;
+  g.add(gl,bd,scr);g.position.set(side*4.3,v.v?4.2:3.9,-16-i*14);g.rotation.y=-side*.55;S.add(g);frames.push({cv:cv,tex:tex,i:i,z:g.position.z})});
+
+ // tool plaques
+ TOOLS.forEach(function(n,i){
+  var c=document.createElement("canvas");c.width=512;c.height=128;var g=c.getContext("2d"),col=COL[i%4];
+  g.fillStyle="rgba(10,6,28,.85)";g.fillRect(4,4,504,120);g.strokeStyle=col;g.lineWidth=6;g.strokeRect(4,4,504,120);
+  g.fillStyle="#fff";g.font="700 40px Unbounded,Arial,sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText(n,256,66);
+  var m=new THREE.Mesh(new THREE.PlaneGeometry(3.4,.85),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),fog:false}));
+  var side=i%2?1:-1;m.position.set(side*3.6,2+((i*7)%5)*.75,-78-i*3);m.rotation.y=-side*.4;S.add(m)});
+
+ // particles
+ var N=500,pa=new Float32Array(N*3);for(var j=0;j<N;j++){pa[j*3]=(Math.random()-.5)*11;pa[j*3+1]=Math.random()*8;pa[j*3+2]=4-Math.random()*150}
+ var pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.BufferAttribute(pa,3));
+ S.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xb99cff,size:.07,transparent:true,opacity:.8})));
+
+ // end portal
+ var vc=document.createElement("canvas");vc.width=vc.height=512;var vg=vc.getContext("2d"),vgr=vg.createLinearGradient(0,60,512,480);
+ vgr.addColorStop(0,"#19d3ff");vgr.addColorStop(.5,"#7b3cff");vgr.addColorStop(1,"#ff3cc8");vg.fillStyle=vgr;vg.font="700 460px Unbounded,Arial Black,sans-serif";vg.textAlign="center";vg.textBaseline="middle";vg.fillText("V",256,270);
+ var logo=new THREE.Mesh(new THREE.PlaneGeometry(5,5),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(vc),transparent:true,fog:false}));logo.position.set(0,4,-134);S.add(logo);
+ var r1=new THREE.Mesh(new THREE.TorusGeometry(4,.1,12,90),new THREE.MeshBasicMaterial({color:0x19d3ff,fog:false})),r2=new THREE.Mesh(new THREE.TorusGeometry(5.2,.07,12,90),new THREE.MeshBasicMaterial({color:0xff3cc8,fog:false}));
+ r1.position.copy(logo.position);r2.position.copy(logo.position);S.add(r1,r2);
+
+ // scroll + chapters
+ var chaps=[].slice.call(document.querySelectorAll(".chap")),cur=0,mx=0,my=0,lastIdx=-1,lastDraw=0;
+ addEventListener("pointermove",function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+ document.querySelectorAll("[data-go]").forEach(function(b){b.addEventListener("click",function(){
+  var m=document.documentElement.scrollHeight-innerHeight;scrollTo({top:m*b.dataset.go,behavior:RM?"auto":"smooth"})})});
+ function tick(ms){
+  var t=ms/1000,m=document.documentElement.scrollHeight-innerHeight,tg=m>0?scrollY/m:0;
+  cur+=(tg-cur)*(RM?1:.07);cam.position.z=-cur*L;
+  if(!RM){cam.position.x=mx*.7;cam.position.y=3.4-my*.4+Math.sin(t*.8)*.05;cam.rotation.y=-mx*.12;cam.rotation.x=-my*.05}
+  chaps.forEach(function(el){var a=+el.dataset.a,b=+el.dataset.b,o=Math.max(0,Math.min(1,Math.min((cur-a)/.025,(b-cur)/.025)));
+   el.style.opacity=o;el.style.visibility=o>.01?"visible":"hidden";el.style.pointerEvents=o>.5?"auto":"none"});
+  var idx=Math.max(0,Math.min(4,Math.round((-cam.position.z-8)/14)));
+  if(idx!==lastIdx){lastIdx=idx;var v=VIDEOS[idx];$("#cn").textContent="Sample "+(idx+1)+" of 5";$("#ct").textContent=v.t;$("#cta").textContent=v.ta;$("#cp").textContent=v.d+" · Made with "+v.tools}
+  if(ms-lastDraw>40){lastDraw=ms;frames.forEach(function(f){if(f.cv&&Math.abs(cam.position.z-f.z)<46){paint(f.cv,f.i,t);f.tex.needsUpdate=true}})}
+  if(!RM){for(var j=0;j<N;j++){pa[j*3+1]+=.004;if(pa[j*3+1]>8)pa[j*3+1]=0}pg.attributes.position.needsUpdate=true;r1.rotation.z=t*.4;r2.rotation.z=-t*.3}
+  logo.position.y=4+Math.sin(t)*.2;
+  R.render(S,cam);requestAnimationFrame(tick)}
+ requestAnimationFrame(tick)}
+(document.fonts?document.fonts.load("700 40px Unbounded"):Promise.resolve()).catch(function(){}).then(start);
+})();
+</script>
+</body>
+</html>
